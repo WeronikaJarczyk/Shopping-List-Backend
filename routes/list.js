@@ -5,7 +5,6 @@ const { authenticateToken } = require('../middleware/authenticate');
 
 // save list
 router.post('/save', authenticateToken, async (req, res) => {
-
   try {
     const { name, items } = req.body;
     const { userId } = req.user;
@@ -28,7 +27,7 @@ router.post('/save', authenticateToken, async (req, res) => {
 // edit lists
 router.post('/edit', async (req, res) => {
   try {
-    const { items, id: _id } = req.body;
+    const { items, _id } = req.body;
 
     await List.updateOne({ _id }, { $set: { items } });
 
@@ -42,7 +41,7 @@ router.post('/edit', async (req, res) => {
 // delete lists
 router.post('/delete', (req, res) => {
   try {
-    const { id: _id } = req.body;
+    const { _id } = req.body;
     List.deleteOne({ _id })
       .then(() => res.json({ message: "Deleted" }));
   } catch (err) {
