@@ -1,0 +1,43 @@
+GET http://localhost:5000/lists/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGVlZGZjZGYxNGE1NzNlZWMzZDE2NTQiLCJsb2dpbiI6Im1hcmlhbmVrMjMiLCJpYXQiOjE2MjYzNTUxNDB9.34V0AZ5kSOZwqC2A3HFGu3cwRknxMALls4hem_G9BpU
+###
+
+POST http://localhost:5000/users/login
+Content-Type: application/json
+
+{
+  "login" : "marianek23",
+  "password" : "marianek23"
+}
+
+###
+
+POST http://localhost:5000/lists/save
+Content-Type: application/json
+
+{
+  "id" : "id120",
+  "name" : "werkaaaa",
+  "items" : [{
+     "item": "blbbbb",
+      "amount": "20",
+      "unit": "kg",
+      "id": "id2"
+   } ]
+}
+
+###
+
+POST http://localhost:5000/lists/edit
+Content-Type: application/json
+
+{
+  "items" : [{
+     "item": "ananas",
+      "amount": "50",
+      "unit": "x",
+      "id": "id9"
+   } ],
+   "id" : "id120"
+}
+
