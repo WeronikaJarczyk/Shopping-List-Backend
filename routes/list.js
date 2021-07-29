@@ -5,19 +5,20 @@ const { authenticateToken } = require('../middleware/authenticate');
 
 // save list
 router.post('/save', authenticateToken, async (req, res) => {
+  console.log(req.body);
   try {
     const { name, items } = req.body;
     const { userId } = req.user;
-
+    if (!userId) throw Error('User id is required');
     const list = new List({
       userId,
       name,
       items
     });
-    list.save()
-      .then(item => {
-        res.json(item);
-      })
+
+    const newList = await list.save();
+
+    res.json({ newList });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "unable to save to database" });

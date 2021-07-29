@@ -14,7 +14,7 @@ const ListSchema = mongoose.Schema({
       item: String,
       amount: Number,
       unit: String,
-      id: String
+      _id: String
     }
   ],
   date: {

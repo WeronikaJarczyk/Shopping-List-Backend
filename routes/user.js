@@ -6,13 +6,11 @@ const jwt = require('jsonwebtoken');
 
 // signing user
 router.post('/', async (req, res) => {
-  console.log(req);
   const { login, password, email } = req.body;
 
-  let user = await User.findOne({ login });
-  if (user) return res.status(400).json({ error: 'User already exists' });
-
   try {
+    const ifUser = await User.findOne({ login });
+    if (ifUser) throw Error('User already exists');
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
@@ -20,13 +18,11 @@ router.post('/', async (req, res) => {
       password: hashedPassword,
       email,
     });
-    user.save()
-      .then(item => {
-        res.json({ message: "user send to database" });
-      })
+    await user.save();
+    res.status(200).json({ message: "You have successfully register" });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "unable to save to database" });
+    res.status(400).json({ message: err.message });
   }
 });
 
@@ -35,7 +31,7 @@ router.post('/login', async (req, res) => {
   const { login, password } = req.body;
   const user = await User.findOne({ login });
   if (!user) {
-    return res.status(400).json({ error: 'Cannot find user' });
+    return res.status(400).json({ message: 'Wrong login or password' });
   }
   try {
     if (await bcrypt.compare(password, user.password)) {
@@ -45,13 +41,14 @@ router.post('/login', async (req, res) => {
       res.json({
         accessToken,
         login: user.login,
+        message: 'success'
       });
     } else {
-      res.status(400).json({ error: 'Wrong Password' });
+      res.status(400).json({ message: 'Wrong password' });
     }
   } catch (err) {
     console.log(err);
-    res.status(500).send();
+    res.status(500).json({ message: "Server error, please try again later" }).send();
   }
 })
 

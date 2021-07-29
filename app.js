@@ -17,7 +17,7 @@ app.use('/users', usersRoute);
 
 
 //connect to DB
-mongoose.connect(process.env.DB_CONNECTION,
+const db = mongoose.connect(process.env.DB_CONNECTION,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -28,3 +28,6 @@ mongoose.connect(process.env.DB_CONNECTION,
 
 // listening to the port
 app.listen(5000);
+
+// for testing
+module.exports = app;
